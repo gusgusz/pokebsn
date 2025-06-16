@@ -1,10 +1,81 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Pokédex</ion-title>
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pok%C3%A9mon_logo.svg"
+      alt="Pokémon Logo"
+      style="width: 120px; margin-right: 16px;"
+    />
   </ion-toolbar>
 </ion-header>
 
+<ion-searchbar
+  [(ngModel)]="searchTerm"
+  (ionInput)="filterPokemons()"
+  debounce="300"
+  placeholder="Pesquisar Pokémon..."
+  showClearButton="focus"
+  animated
+></ion-searchbar>
+
 <ion-content>
+  <ion-card *ngIf="selectedPokemon" class="pokemon-detail-card ion-margin">
+    <ion-card-header>
+      <ion-card-title>{{ selectedPokemon.name | titlecase }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col size="12" size-md="4" class="ion-text-center">
+          <img
+            [src]="selectedPokemon.sprites?.other['official-artwork']?.front_default"
+            [alt]="selectedPokemon.name"
+            style="width: 100%; max-width: 200px;"
+          />
+        </ion-col>
+        <ion-col size="12" size-md="8">
+          <p><strong>ID:</strong> {{ selectedPokemon.id }}</p>
+          <p><strong>Altura:</strong> {{ selectedPokemon.height / 10 }} m</p>
+          <p><strong>Peso:</strong> {{ selectedPokemon.weight / 10 }} kg</p>
+          <p>
+            <strong>Tipos:</strong>
+            <ion-chip *ngFor="let type of selectedPokemon.types">
+              <ion-avatar>
+                <img
+                  [src]="getTypeIcon(type.type.name)"
+                  [alt]="type.type.name"
+                />
+              </ion-avatar>
+              <ion-label>{{ type.type.name | titlecase }}</ion-label>
+            </ion-chip>
+          </p>
+          <p>
+            <strong>Habilidades:</strong>
+            <span *ngFor="let ability of selectedPokemon.abilities; let i = index">
+              {{ ability.ability.name }}<span *ngIf="i < selectedPokemon.abilities.length - 1">, </span>
+            </span>
+          </p>
+          <p *ngIf="selectedPokemon.evolves_from_species">
+            <strong>Pré-evolução:</strong>
+            <a [routerLink]="['/pokemon', selectedPokemon.evolves_from_species.name]">
+              {{ selectedPokemon.evolves_from_species.name | titlecase }}
+            </a>
+          </p>
+          <p *ngIf="selectedPokemon.species.evolves_to.length > 0">
+            <strong>Próxima evolução:</strong>
+            <a
+              *ngFor="let evolution of selectedPokemon.species.evolves_to"
+              [routerLink]="['/pokemon', evolution.species.name]"
+            >
+              {{ evolution.species.name | titlecase }}
+            </a>
+          </p>
+                 <ion-button expand="block" fill="clear" color="danger" (click)="selectedPokemon = null">
+            Fechar Detalhes
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
   <ion-grid>
     <ion-row>
       <ion-col
@@ -54,3 +125,5 @@
     </ion-grid>
   </ion-toolbar>
 </ion-footer>
+
+ 
