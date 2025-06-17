@@ -34,7 +34,7 @@
 
 
   <ion-card *ngIf="selectedPokemon" class="pokemon-detail-card ion-margin">
-    <ion-card-header>
+    <ion-card-header (click)="goToPokemon(selectedPokemon.name)">
       <ion-card-title>{{ selectedPokemon.name | titlecase }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
@@ -79,7 +79,7 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Lista de Pokémons -->
+
   <ion-grid>
     <ion-row>
       <ion-col
@@ -90,7 +90,7 @@
       >
         <ion-card class="poke-card">
           <img [src]="pokemon.image" [alt]="pokemon.name" />
-          <ion-card-header>
+          <ion-card-header (click)="goToPokemon(pokemon.name)">
             <ion-card-title>{{ pokemon.name | titlecase }}</ion-card-title>
           </ion-card-header>
           <ion-card-content>

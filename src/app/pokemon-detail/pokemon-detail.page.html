@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      {{ pokemon?.name ? (pokemon.name | titlecase) : 'Carregando...' }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="pokemon">
+  <ion-card>
+    <img
+      [src]="pokemon.sprites?.other?.['official-artwork']?.front_default"
+      [alt]="pokemon.name"
+    />
+    <ion-card-header>
+      <ion-card-title>{{ pokemon.name | titlecase }}</ion-card-title>
+      <ion-card-subtitle>ID: {{ pokemon.id }}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p><strong>Altura:</strong> {{ pokemon.height / 10 }} m</p>
+      <p><strong>Peso:</strong> {{ pokemon.weight / 10 }} kg</p>
+
+      <p><strong>Tipos:</strong></p>
+      <div class="types-container">
+        <ion-chip *ngFor="let type of pokemon.types" [ngClass]="'type-' + type.type.name">
+          <ion-avatar>
+            <img [src]="getTypeIcon(type.type.name)" />
+          </ion-avatar>
+          <ion-label>{{ type.type.name | titlecase }}</ion-label>
+        </ion-chip>
+      </div>
+
+      <p><strong>Habilidades:</strong></p>
+      <ul>
+        <li *ngFor="let ability of pokemon.abilities">
+          {{ ability.ability.name | titlecase }}
+        </li>
+      </ul>
+
+      <p><strong>Status Base:</strong></p>
+      <ion-list>
+        <ion-item *ngFor="let stat of pokemon.stats">
+          <ion-label>
+            {{ stat.stat.name | titlecase }}: {{ stat.base_stat }}
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <ion-button expand="block" color="medium" fill="outline" (click)="goBack()">
+        Voltar
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

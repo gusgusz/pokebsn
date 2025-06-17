@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FavoriteService } from '../services/favorite.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -25,16 +26,17 @@ export class HomePage implements OnInit {
   showSuggestions: boolean = false;
   constructor(
     private http: HttpClient,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
+    private router: Router
   ) {}
 
-   ngOnInit() {
-    this.favoriteService.favorites$.subscribe(favorites => {
+  ngOnInit() {
+    this.favoriteService.favorites$.subscribe((favorites) => {
       this.favorites = favorites;
     });
     this.loadPokemons();
   }
-    toggleFavorite(pokemon: any) {
+  toggleFavorite(pokemon: any) {
     if (this.isFavorite(pokemon)) {
       this.favoriteService.removeFavorite(pokemon.id);
     } else {
@@ -43,7 +45,7 @@ export class HomePage implements OnInit {
   }
 
   isFavorite(pokemon: any): boolean {
-    return this.favorites.some(fav => fav.id === pokemon.id);
+    return this.favorites.some((fav) => fav.id === pokemon.id);
   }
 
   loadAllPokemonNames() {
@@ -181,5 +183,9 @@ export class HomePage implements OnInit {
     setTimeout(() => {
       this.showSuggestions = false;
     }, 200); // aguarda clique no item antes de fechar
+  }
+  goToPokemon(pokemon: any) {
+    console.log(pokemon);
+    this.router.navigate(['/pokemon', pokemon]);
   }
 }
