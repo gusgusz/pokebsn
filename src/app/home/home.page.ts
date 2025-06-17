@@ -21,6 +21,10 @@ export class HomePage implements OnInit {
   offset = 0;
   selectedPokemon: any = null;
 
+searchTerm: string = '';
+filteredSuggestions: any[] = [];
+showSuggestions: boolean = false;
+
   constructor(private http: HttpClient) {}
 
 
@@ -122,7 +126,7 @@ loadAllPokemonNames() {
       this.selectedPokemon = pokemonData;
       this.scrollToTop();
     });
-      console.log(this.selectedPokemon);
+      
   }
 
   scrollToTop() {
@@ -130,13 +134,6 @@ loadAllPokemonNames() {
   }
 
 
-
-
-
-
-searchTerm: string = '';
-filteredSuggestions: any[] = [];
-showSuggestions: boolean = false;
 
 onSearchInput() {
   const term = this.searchTerm.toLowerCase().trim();
