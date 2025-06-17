@@ -122,6 +122,7 @@ loadAllPokemonNames() {
       this.selectedPokemon = pokemonData;
       this.scrollToTop();
     });
+      console.log(this.selectedPokemon);
   }
 
   scrollToTop() {
