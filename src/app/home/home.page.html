@@ -8,16 +8,34 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-searchbar
+
+
+
+
+
+
+<ion-content>
+  <ion-searchbar
   [(ngModel)]="searchTerm"
-  (ionInput)="filterPokemons()"
+  (ionInput)="onSearchInput()"
+  (keydown.enter)="searchPokemon()"
+  (ionBlur)="clearSuggestions()"
   debounce="300"
   placeholder="Pesquisar Pokémon..."
   showClearButton="focus"
   animated
 ></ion-searchbar>
 
-<ion-content>
+
+<ion-list *ngIf="filteredSuggestions.length > 0 && searchTerm && showSuggestions">
+  <ion-item
+    button
+    *ngFor="let suggestion of filteredSuggestions"
+    (click)="onPokemonSelected(suggestion)"
+  >
+    {{ suggestion.name | titlecase }}
+  </ion-item>
+</ion-list>
   <ion-card *ngIf="selectedPokemon" class="pokemon-detail-card ion-margin">
     <ion-card-header>
       <ion-card-title>{{ selectedPokemon.name | titlecase }}</ion-card-title>
@@ -41,16 +59,16 @@
               <ion-avatar>
                 <img
                   [src]="getTypeIcon(type.type.name)"
-                  [alt]="type.type.name"
+                  [alt]="type.name"
                 />
               </ion-avatar>
-              <ion-label>{{ type.type.name | titlecase }}</ion-label>
+              <ion-label>{{ type.name | titlecase }}</ion-label>
             </ion-chip>
           </p>
           <p>
             <strong>Habilidades:</strong>
             <span *ngFor="let ability of selectedPokemon.abilities; let i = index">
-              {{ ability.ability.name }}<span *ngIf="i < selectedPokemon.abilities.length - 1">, </span>
+              {{ ability.name }}<span *ngIf="i < selectedPokemon.abilities.length - 1">, </span>
             </span>
           </p>
           <p *ngIf="selectedPokemon.evolves_from_species">

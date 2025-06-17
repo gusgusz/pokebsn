@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -17,14 +19,30 @@ export class HomePage implements OnInit {
   allPokemons: any[] = [];
   limit = 20;
   offset = 0;
-  searchTerm: string = '';
   selectedPokemon: any = null;
 
   constructor(private http: HttpClient) {}
 
-  ngOnInit() {
-    this.loadPokemons();
-  }
+
+ngOnInit() {
+  this.loadPokemons();
+  this.loadAllPokemonNames();
+}
+
+loadAllPokemonNames() {
+  const url = `https://pokeapi.co/api/v2/pokemon?limit=10000&offset=0`;
+  this.http.get<any>(url).subscribe((response) => {
+    this.allPokemons = response.results.map((pokemon: any) => {
+      const id = pokemon.url.split('/').filter(Boolean).pop();
+      return {
+        name: pokemon.name,
+        id,
+        image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+      };
+    });
+  });
+}
+
 
   loadPokemons() {
     const url = `https://pokeapi.co/api/v2/pokemon?limit=${this.limit}&offset=${this.offset}`;
@@ -109,4 +127,55 @@ export class HomePage implements OnInit {
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+
+
+
+
+
+searchTerm: string = '';
+filteredSuggestions: any[] = [];
+showSuggestions: boolean = false;
+
+onSearchInput() {
+  const term = this.searchTerm.toLowerCase().trim();
+  if (term.length > 1) {
+    this.filteredSuggestions = this.allPokemons.filter(p =>
+      p.name.toLowerCase().includes(term)
+    ).slice(0, 10); // sugestões limitadas
+    this.showSuggestions = true;
+  } else {
+    this.filteredSuggestions = [];
+    this.showSuggestions = false;
+  }
+}
+
+onPokemonSelected(pokemon: any) {
+  this.searchTerm = pokemon.name;
+  this.filteredSuggestions = [];
+  this.showSuggestions = false;
+  this.goToDetails(pokemon);
+}
+
+searchPokemon() {
+  const match = this.allPokemons.find(p =>
+    p.name.toLowerCase() === this.searchTerm.toLowerCase()
+  );
+  if (match) {
+    this.goToDetails(match);
+  } else {
+    alert('Pokémon não encontrado!');
+  }
+  this.filteredSuggestions = [];
+  this.showSuggestions = false;
+}
+
+clearSuggestions() {
+  setTimeout(() => {
+    this.showSuggestions = false;
+  }, 200); // aguarda clique no item antes de fechar
+}
+
+
+  
 }
