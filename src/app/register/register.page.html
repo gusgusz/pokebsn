@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pok%C3%A9mon_logo.svg" alt="Pokémon Logo" style="width: 120px; margin: auto;" />
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Cadastro</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Usuário</ion-label>
+        <ion-input [(ngModel)]="username" placeholder="Ash Ketchum"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input [(ngModel)]="email" type="email" placeholder="email@poke.com"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Senha</ion-label>
+        <ion-input [(ngModel)]="password" type="password" placeholder="••••••"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Confirmar Senha</ion-label>
+        <ion-input [(ngModel)]="password_confirmation" type="password"></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" color="primary" (click)="register()">Cadastrar</ion-button>
+
+  <ion-text>
+  <p class="ion-text-center ion-margin-top">
+    Já tem conta? <ion-router-link routerLink="/login">Faça o Login</ion-router-link>
+
+  </p>
+</ion-text>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

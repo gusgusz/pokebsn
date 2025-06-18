@@ -34,6 +34,7 @@ export class HomePage implements OnInit {
     this.favoriteService.favorites$.subscribe((favorites) => {
       this.favorites = favorites;
     });
+    this.loadAllPokemonNames();
     this.loadPokemons();
   }
   toggleFavorite(pokemon: any) {
