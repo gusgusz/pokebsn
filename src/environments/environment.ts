@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: true,
+  apiBaseUrl: 'https://pokedexapi-2ssf.onrender.com/', // URL da API em produção
 };
 
 /*

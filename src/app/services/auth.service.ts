@@ -7,7 +7,7 @@ import { LoadingController, ToastController } from '@ionic/angular';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:10000';
+  private apiUrl = 'https://pokedexapi-2ssf.onrender.com/api/';
 
   constructor(
     private http: HttpClient,
@@ -21,14 +21,14 @@ export class AuthService {
     await loading.present();
 
     try {
-      const res = await this.http.post<any>(`${this.apiUrl}/login`, {
+      const res = await this.http.post<any>(`${this.apiUrl}auth/login`, {
         email, password
       }).toPromise();
-
-      localStorage.setItem('token', res.token.token);
+      console.log(res, 'login console');
+      localStorage.setItem('token', res.token);
       await loading.dismiss();
       await this.showToast('Login realizado com sucesso!', 'success');
-      this.router.navigateByUrl('/home');
+      this.router.navigateByUrl('/');
       return true;
     } catch (error) {
       await loading.dismiss();
@@ -42,7 +42,7 @@ export class AuthService {
     await loading.present();
 
     try {
-      await this.http.post<any>(`${this.apiUrl}/register`, {
+      await this.http.post<any>(`${this.apiUrl}auth/register`, {
         username, email, password, password_confirmation
       }).toPromise();
 
@@ -57,11 +57,18 @@ export class AuthService {
     }
   }
 
-  isLoggedIn(): boolean {
-    const token = localStorage.getItem('token');
-    // Você pode implementar validação do token aqui, se quiser
-    return !!token;
+isLoggedIn(): boolean {
+  const token = localStorage.getItem('token');
+  console.log(token)
+  
+  // Adicionando uma verificação simples para garantir que o token não esteja vazio ou nulo
+  if (token && token !== 'null' && token !== 'undefined') {
+    return true;
   }
+  
+  return false;
+}
+
 
   private async showToast(message: string, color: string) {
     const toast = await this.toastCtrl.create({

@@ -1,27 +1,28 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { LoadingController, ToastController, IonicModule } from '@ionic/angular';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';  // Importando FormsModule para usar ngModel
+import { IonicModule } from '@ionic/angular';  // Importando IonicModule
+import { RouterModule } from '@angular/router';  // Importando RouterModule para navegação
+import { AuthService } from '../services/auth.service';  // Serviço de autenticação
+import { ToastController, LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
+  imports: [CommonModule, IonicModule, FormsModule, RouterModule],  // Assegurando que esses módulos estão aqui
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  imports: [CommonModule, FormsModule, IonicModule, RouterModule],
 })
 export class LoginPage {
   email: string = '';
   password: string = '';
 
   constructor(
-    private http: HttpClient,
-    private router: Router,
+    private authService: AuthService,  // Serviço de autenticação
     private loadingCtrl: LoadingController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private router: Router
   ) {}
 
   async login() {
@@ -30,24 +31,10 @@ export class LoginPage {
       return;
     }
 
-    const loading = await this.loadingCtrl.create({ message: 'Entrando...' });
-    await loading.present();
-
-    this.http.post<any>('https://pokedexapi-2ssf.onrender.com/api/auth/login', {
-      email: this.email,
-      password: this.password
-    }).subscribe({
-      next: async (res) => {
-        await loading.dismiss();
-        localStorage.setItem('token', res.token.token);
-        this.showToast('Login realizado com sucesso!', 'success');
-        this.router.navigateByUrl('/');
-      },
-      error: async () => {
-        await loading.dismiss();
-        this.showToast('Credenciais inválidas. Tente novamente.', 'danger');
-      }
-    });
+    const isLoggedIn = await this.authService.login(this.email, this.password);
+    if (isLoggedIn) {
+      this.router.navigateByUrl('/');  // Aqui você pode redirecionar para a página inicial, por exemplo.
+    }
   }
 
   async showToast(message: string, color: string) {
@@ -55,7 +42,7 @@ export class LoginPage {
       message,
       color,
       duration: 3000,
-      position: 'bottom'
+      position: 'bottom',
     });
     await toast.present();
   }

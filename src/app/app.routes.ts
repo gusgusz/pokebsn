@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomePage } from './home/home.page';
 import { AuthGuard } from './guards/auth.guard';
+import { FavoritesPage } from './favorites/favorites.page';
 
 export const routes: Routes = [
   {
@@ -23,5 +24,10 @@ export const routes: Routes = [
   {
     path: 'register',
     loadComponent: () => import('./register/register.page').then(m => m.RegisterPage)
+  },
+  { 
+    path: 'favorites', 
+    loadComponent: () => import('./favorites/favorites.page').then(m => m.FavoritesPage), 
+    canActivate: [AuthGuard]
   },
 ];

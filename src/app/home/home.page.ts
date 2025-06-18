@@ -5,7 +5,9 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FavoriteService } from '../services/favorite.service';
+import { AuthInterceptor } from '../interceptors/auth.interceptor';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -24,29 +26,44 @@ export class HomePage implements OnInit {
   searchTerm: string = '';
   filteredSuggestions: any[] = [];
   showSuggestions: boolean = false;
+
   constructor(
     private http: HttpClient,
     private favoriteService: FavoriteService,
+    private authService : AuthService,
     private router: Router
   ) {}
 
   ngOnInit() {
+    // Inscreve-se na lista de favoritos para atualizações em tempo real
     this.favoriteService.favorites$.subscribe((favorites) => {
       this.favorites = favorites;
     });
     this.loadAllPokemonNames();
     this.loadPokemons();
   }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');  // Recupera o token do localStorage
+  }
+
   toggleFavorite(pokemon: any) {
+    const token = this.getToken(); 
+    console.log(token);
+    if (!token) {
+      console.error('Token de autenticação não encontrado');
+      return;
+    }
+
     if (this.isFavorite(pokemon)) {
-      this.favoriteService.removeFavorite(pokemon.id);
+      this.favoriteService.removeFavorite(pokemon.id, token);  // Passa o id para o método remove
     } else {
-      this.favoriteService.addFavorite(pokemon);
+      this.favoriteService.addFavorite(pokemon, token);  // Passa o Pokémon para o método add
     }
   }
 
   isFavorite(pokemon: any): boolean {
-    return this.favorites.some((fav) => fav.id === pokemon.id);
+    return this.favorites.some((fav) => fav.id === pokemon.id);  // Verifica pelo id, não pelo nome
   }
 
   loadAllPokemonNames() {
@@ -185,6 +202,7 @@ export class HomePage implements OnInit {
       this.showSuggestions = false;
     }, 200); // aguarda clique no item antes de fechar
   }
+
   goToPokemon(pokemon: any) {
     console.log(pokemon);
     this.router.navigate(['/pokemon', pokemon]);
