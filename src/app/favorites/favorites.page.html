@@ -1,26 +1,26 @@
 <ion-header>
-  <ion-toolbar>
-    <!-- Botão Home -->
-    <ion-buttons slot="start">
-      <ion-button (click)="goToHome()">
-        <ion-icon slot="icon-only" name="home"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-
-    <!-- Título -->
-    <ion-title>Favoritos</ion-title>
-
-    <!-- Botão Logout -->
+  <ion-toolbar color="primary">
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pok%C3%A9mon_logo.svg"
+      alt="Pokémon Logo"
+      style="width: 120px; margin-right: 16px;"
+    />
     <ion-buttons slot="end">
-      <ion-button (click)="logout()">
-        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      <!-- Botão de Página Principal com estilo distinto -->
+      <ion-button (click)="goToHome()" color="secondary">
+        Página Principal
+      </ion-button>
+      
+      <!-- Botão de Logout com estilo distinto -->
+      <ion-button (click)="logout()" color="danger">
+        Logout
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- Caixa de pesquisa -->
+
   <ion-searchbar 
     [(ngModel)]="searchTerm" 
     debounce="500" 
@@ -28,14 +28,15 @@
     placeholder="Pesquise por Pokémon">
   </ion-searchbar>
 
-  <!-- Lista de Favoritos -->
-  <ion-list>
-    <ion-item *ngFor="let pokemon of filteredFavorites" (click)="onPokemonSelected(pokemon)">
+  <ion-list *ngIf="filteredFavorites.length > 0 && searchTerm && showSuggestions">
+    <ion-item
+      *ngFor="let pokemon of filteredFavorites" 
+      (click)="onPokemonSelected(pokemon)">
       <ion-avatar slot="start">
         <img [src]="pokemon.imageUrl" alt="{{ pokemon.name }}">
       </ion-avatar>
       <ion-label>
-        <h2>{{ pokemon.name }}</h2>
+        <h2>{{ pokemon.name | titlecase }}</h2>
       </ion-label>
       <ion-button (click)="toggleFavorite(pokemon)" fill="clear">
         <ion-icon [name]="isFavorite(pokemon) ? 'heart' : 'heart-outline'"></ion-icon>
@@ -43,17 +44,15 @@
     </ion-item>
   </ion-list>
 
-  <!-- Mensagem se não houver favoritos -->
   <div *ngIf="filteredFavorites.length === 0" class="empty-message">
     <ion-text color="medium">
       <p>Nenhum Pokémon favorito encontrado.</p>
     </ion-text>
   </div>
 
-  <!-- Sugestões de pesquisa -->
-  <ion-list *ngIf="showSuggestions">
-    <ion-item *ngFor="let suggestion of filteredFavorites" (click)="onPokemonSelected(suggestion)">
-      <ion-label>{{ suggestion.name }}</ion-label>
-    </ion-item>
-  </ion-list>
 </ion-content>
+
+<ion-footer>
+ 
+</ion-footer>
+
