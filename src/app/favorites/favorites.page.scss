@@ -11,7 +11,7 @@ ion-searchbar {
   --border-radius: 12px;
   --width: 70%;
   --box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  --marge: 8px 4px;
+  --margin: 8px 4px;
 }
 
 .pokemon-detail-card .types-container {
@@ -53,7 +53,7 @@ ion-list {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  height: 40%;
+  height: auto;
 }
 
 ion-item {
@@ -134,6 +134,7 @@ ion-item {
   }
 }
 
+/* Tipos de Pokémon */
 .type-grass    { background-color: #78C850; }
 .type-fire     { background-color: #F08030; }
 .type-water    { background-color: #6890F0; }
@@ -152,3 +153,51 @@ ion-item {
 .type-steel    { background-color: #B8B8D0; }
 .type-fairy    { background-color: #EE99AC; }
 .type-normal   { background-color: #A8A878; }
+
+/* Estilos para o ion-toolbar */
+ion-toolbar {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  background-color: #ff944d; /* Cor principal da página */
+}
+
+ion-buttons[slot="start"], ion-buttons[slot="end"] {
+  display: flex;
+  align-items: center;
+}
+
+ion-button {
+  --border-radius: 50%; /* Botões arredondados */
+  --background: transparent; /* Fundo transparente */
+}
+
+ion-icon {
+  font-size: 24px; /* Ícones maiores */
+  color: #fff;
+}
+
+/* Estilos para o botão de favoritos */
+ion-button:nth-child(1) ion-icon {
+  color: #ff944d;  /* Cor do ícone de favoritos */
+}
+
+/* Estilo para o ícone de logout */
+ion-button:nth-child(2) ion-icon {
+  color: #fff;  /* Cor do ícone de logout */
+}
+
+/* Estilos para os ícones na lista de favoritos */
+ion-item {
+  --background: #fff;
+  --color: #333;
+  margin: 8px;
+}
+
+ion-item ion-button {
+  --background: transparent;
+  padding: 0;
+}
+
+ion-item ion-button ion-icon {
+  color: #ff944d;
+}

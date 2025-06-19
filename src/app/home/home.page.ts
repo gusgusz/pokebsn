@@ -47,6 +47,16 @@ export class HomePage implements OnInit {
     return localStorage.getItem('token');  // Recupera o token do localStorage
   }
 
+    goToFavorites() {
+    this.router.navigate(['/favorites']);
+  }
+
+  // Função de logout
+  logout() {
+    localStorage.removeItem('token'); // Remover o token de autenticação
+    this.router.navigate(['/login']); // Redirecionar para a página de login
+  }
+
   toggleFavorite(pokemon: any) {
     const token = this.getToken(); 
     console.log(token);
@@ -56,14 +66,14 @@ export class HomePage implements OnInit {
     }
 
     if (this.isFavorite(pokemon)) {
-      this.favoriteService.removeFavorite(pokemon.id, token);  // Passa o id para o método remove
+      this.favoriteService.removeFavorite(pokemon.id); 
     } else {
-      this.favoriteService.addFavorite(pokemon, token);  // Passa o Pokémon para o método add
+      this.favoriteService.addFavorite(pokemon.name); 
     }
   }
 
   isFavorite(pokemon: any): boolean {
-    return this.favorites.some((fav) => fav.id === pokemon.id);  // Verifica pelo id, não pelo nome
+    return this.favorites.some((fav) => fav.name === pokemon.name);  // Verifica pelo id, não pelo nome
   }
 
   loadAllPokemonNames() {
@@ -200,7 +210,7 @@ export class HomePage implements OnInit {
   clearSuggestions() {
     setTimeout(() => {
       this.showSuggestions = false;
-    }, 200); // aguarda clique no item antes de fechar
+    }, 200); 
   }
 
   goToPokemon(pokemon: any) {

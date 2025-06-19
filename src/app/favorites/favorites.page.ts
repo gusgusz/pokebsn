@@ -33,7 +33,7 @@ export class FavoritesPage implements OnInit {
     
     if (token) {
       // Carrega a lista de favoritos a partir da API
-      this.favoriteService.loadFavorites(token);
+      this.favoriteService.loadFavorites();
       
       // Assina a lista de favoritos do serviço
       this.favoriteService.favorites$.subscribe((favorites) => {
@@ -114,12 +114,12 @@ export class FavoritesPage implements OnInit {
 
   // Adiciona um Pokémon aos favoritos na API
   addFavoriteToAPI(pokemon: any, token: string) {
-    this.favoriteService.addFavorite(pokemon, token);
+    this.favoriteService.addFavorite(pokemon);
   }
 
   // Remove um Pokémon dos favoritos na API
   removeFavoriteFromAPI(favoriteId: number, token: string) {
-    this.favoriteService.removeFavorite(favoriteId, token);
+    this.favoriteService.removeFavorite(favoriteId);
   }
 
   // Navega para a página inicial

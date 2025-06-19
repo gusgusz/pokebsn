@@ -1,12 +1,27 @@
+
+
 <ion-header>
   <ion-toolbar color="primary">
-    <img
+       <img
       src="https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pok%C3%A9mon_logo.svg"
       alt="Pokémon Logo"
       style="width: 120px; margin-right: 16px;"
     />
+    <ion-buttons slot="end">
+      <!-- Botão de Favoritos com estilo distinto -->
+      <ion-button (click)="goToFavorites()" color="secondary">
+        Favoritos
+      </ion-button>
+      
+      <!-- Botão de Logout com estilo distinto -->
+      <ion-button (click)="logout()" color="danger">
+        Logout
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+
 
 <ion-content>
 

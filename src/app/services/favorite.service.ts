@@ -10,23 +10,25 @@ export class FavoriteService {
   private favoritesSubject = new BehaviorSubject<any[]>([]); // Inicializa a lista de favoritos
   favorites$ = this.favoritesSubject.asObservable(); // Observable de favoritos
   
-  private apiUrl = `${environment.apiBaseUrl}/api/favorites`;
+  private apiUrl = `${environment.apiBaseUrl}api/favorites`;
 
   constructor(private http: HttpClient) {}
 
   // Método para obter os cabeçalhos de autorização com o token
-  private getAuthHeaders(token: string): HttpHeaders {
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    console.log(token, "get auth tok");
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   // Método para adicionar um favorito
-  addFavorite(pokemon: any, token: string) {
-    const headers = this.getAuthHeaders(token);
+  addFavorite(pokemon: any) {
+    const headers = this.getAuthHeaders();
 
     this.http.post(this.apiUrl, { name: pokemon.name }, { headers }).subscribe({
       next: (response: any) => {
         console.log('Favorito adicionado com sucesso:', response);
-        // Atualiza a lista de favoritos no BehaviorSubject
+       
         this.favoritesSubject.next([...this.favoritesSubject.value, response]);
       },
       error: (err) => {
@@ -37,13 +39,13 @@ export class FavoriteService {
   }
 
   // Método para remover um favorito
-  removeFavorite(favoriteId: number, token: string) {
-    const headers = this.getAuthHeaders(token);
+  removeFavorite(favoriteId: number) {
+    const headers = this.getAuthHeaders();
 
     this.http.delete(`${this.apiUrl}/${favoriteId}`, { headers }).subscribe({
       next: (response: any) => {
         console.log('Favorito removido com sucesso:', response);
-        // Atualiza a lista de favoritos no BehaviorSubject após remoção
+        
         const updatedFavorites = this.favoritesSubject.value.filter(fav => fav.id !== favoriteId);
         this.favoritesSubject.next(updatedFavorites);
       },
@@ -55,8 +57,8 @@ export class FavoriteService {
   }
 
   // Método para carregar os favoritos a partir da API
-  loadFavorites(token: string) {
-    const headers = this.getAuthHeaders(token);
+  loadFavorites() {
+    const headers = this.getAuthHeaders();
 
     this.http.get<any[]>(this.apiUrl, { headers }).subscribe({
       next: (favorites) => {

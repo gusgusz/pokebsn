@@ -16,6 +16,7 @@ export class AuthService {
     private toastCtrl: ToastController
   ) {}
 
+  // Método para fazer o login
   async login(email: string, password: string) {
     const loading = await this.loadingCtrl.create({ message: 'Entrando...' });
     await loading.present();
@@ -25,7 +26,11 @@ export class AuthService {
         email, password
       }).toPromise();
       console.log(res, 'login console');
+
+      // Salva o token e o userId no localStorage
       localStorage.setItem('token', res.token);
+      localStorage.setItem('userId', res.userId); // Armazenando o userId
+
       await loading.dismiss();
       await this.showToast('Login realizado com sucesso!', 'success');
       this.router.navigateByUrl('/');
@@ -37,6 +42,7 @@ export class AuthService {
     }
   }
 
+  // Método para fazer o registro
   async register(username: string, email: string, password: string, password_confirmation: string) {
     const loading = await this.loadingCtrl.create({ message: 'Registrando...' });
     await loading.present();
@@ -57,19 +63,27 @@ export class AuthService {
     }
   }
 
-isLoggedIn(): boolean {
-  const token = localStorage.getItem('token');
-  console.log(token)
-  
-  // Adicionando uma verificação simples para garantir que o token não esteja vazio ou nulo
-  if (token && token !== 'null' && token !== 'undefined') {
-    return true;
+  // Verifica se o usuário está logado
+  isLoggedIn(): boolean {
+    const token = localStorage.getItem('token');
+    console.log(token);
+
+    // Verificando se o token e o userId estão presentes
+    if (token && token !== 'null' && token !== 'undefined' && localStorage.getItem('userId')) {
+      return true;
+    }
+
+    return false;
   }
-  
-  return false;
-}
 
+  // Método para sair
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId'); // Remove o userId também
+    this.router.navigateByUrl('/login');
+  }
 
+  // Método privado para exibir Toasts
   private async showToast(message: string, color: string) {
     const toast = await this.toastCtrl.create({
       message,
@@ -78,10 +92,5 @@ isLoggedIn(): boolean {
       position: 'bottom'
     });
     await toast.present();
-  }
-
-  logout() {
-    localStorage.removeItem('token');
-    this.router.navigateByUrl('/login');
   }
 }
