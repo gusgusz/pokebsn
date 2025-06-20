@@ -43,13 +43,13 @@ export class AuthService {
   }
 
   // Método para fazer o registro
-  async register(username: string, email: string, password: string, password_confirmation: string) {
+  async register(name: string, email: string, password: string, password_confirmation: string) {
     const loading = await this.loadingCtrl.create({ message: 'Registrando...' });
     await loading.present();
 
     try {
       await this.http.post<any>(`${this.apiUrl}auth/register`, {
-        username, email, password, password_confirmation
+        name, email, password, password_confirmation
       }).toPromise();
 
       await loading.dismiss();

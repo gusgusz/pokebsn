@@ -14,7 +14,7 @@ import { star, starOutline, heart, logOutOutline, heartOutline } from 'ionicons/
 
 addIcons({
   'star': star,
-  'star-outline': star,
+  'star-outline': starOutline,
   'heart': heartOutline,
   'log-out-outline': logOutOutline
 });
