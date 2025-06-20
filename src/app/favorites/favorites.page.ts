@@ -6,6 +6,17 @@ import { FavoriteService } from '../services/favorite.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+  import { addIcons } from 'ionicons';
+import { star, starOutline, heart, logOutOutline, heartOutline, home } from 'ionicons/icons';
+
+
+addIcons({
+  'star': star,
+  'star-outline': starOutline,
+  'heart': heartOutline,
+  'log-out-outline': logOutOutline,
+  'home': home
+});
 
 @Component({
   selector: 'app-favorites',
@@ -79,19 +90,10 @@ export class FavoritesPage implements OnInit {
 
   // Alterna o status de favorito de um Pokémon
   toggleFavorite(pokemon: any) {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error("Token não encontrado");
-      return;
-    }
 
-    const isFavorite = this.isFavorite(pokemon);
-    if (isFavorite) {
-      this.removeFavoriteFromAPI(pokemon.id, token); 
-    } else {
-      this.addFavoriteToAPI(pokemon, token);
-    }
+       this.favoriteService.removeFavorite(pokemon.poke_id);
   }
+ 
 
   // Verifica se o Pokémon é favorito
   isFavorite(pokemon: any): boolean {
@@ -114,10 +116,6 @@ export class FavoritesPage implements OnInit {
     this.favoriteService.addFavorite(pokemon);
   }
 
-  // Remove um Pokémon dos favoritos na API
-  removeFavoriteFromAPI(favoriteId: number, token: string) {
-    this.favoriteService.removeFavorite(favoriteId);
-  }
 
   // Navega para a página inicial
   goToHome() {
