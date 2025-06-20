@@ -46,14 +46,14 @@ $card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin: 0 10px;
     border-radius: 8px;
     background-color: #fff7f0;
+     color:#333;
 
     ion-item {
       --background: white;
       transition: background 0.2s;
+      color:#333;
 
-      &:hover {
-        background: $secondary-color;
-      }
+ 
     }
   }
 
