@@ -3,15 +3,15 @@
     <img
       src="https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pok%C3%A9mon_logo.svg"
       alt="Pokémon Logo"
-      style="width: 120px; margin-right: 16px;"
+   
     />
     <ion-buttons slot="end">
-      <!-- Botão de Página Principal com estilo distinto -->
+      
       <ion-button (click)="goToHome()" color="secondary">
         Página Principal
       </ion-button>
       
-      <!-- Botão de Logout com estilo distinto -->
+  
       <ion-button (click)="logout()" color="danger">
         Logout
       </ion-button>
@@ -19,8 +19,10 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
 
+
+
+  <ion-content>
   <ion-searchbar 
     [(ngModel)]="searchTerm" 
     debounce="500" 
@@ -28,29 +30,31 @@
     placeholder="Pesquise por Pokémon">
   </ion-searchbar>
 
-  <ion-list *ngIf="filteredFavorites.length > 0 && searchTerm && showSuggestions">
-    <ion-item
-      *ngFor="let pokemon of filteredFavorites" 
-      (click)="onPokemonSelected(pokemon)">
-      <ion-avatar slot="start">
-        <img [src]="pokemon.imageUrl" alt="{{ pokemon.name }}">
-      </ion-avatar>
-      <ion-label>
-        <h2>{{ pokemon.name | titlecase }}</h2>
-      </ion-label>
-      <ion-button (click)="toggleFavorite(pokemon)" fill="clear">
-        <ion-icon [name]="isFavorite(pokemon) ? 'heart' : 'heart-outline'"></ion-icon>
-      </ion-button>
-    </ion-item>
-  </ion-list>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" size-md="4" *ngFor="let pokemon of favorites">
+        <ion-card (click)="goToPokemon(pokemon.name)">
+          <img [src]="pokemon.imageUrl" alt="{{ pokemon.name }}" />
+          <ion-card-header>
+            <ion-card-title>{{ pokemon.name | titlecase }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-button (click)="toggleFavorite(pokemon)" fill="clear">
+              <ion-icon [name]="isFavorite(pokemon) ? 'heart' : 'heart-outline'"></ion-icon>
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <div *ngIf="filteredFavorites.length === 0" class="empty-message">
     <ion-text color="medium">
       <p>Nenhum Pokémon favorito encontrado.</p>
     </ion-text>
   </div>
-
 </ion-content>
+
 
 <ion-footer>
  

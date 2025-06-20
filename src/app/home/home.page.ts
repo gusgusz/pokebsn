@@ -8,6 +8,16 @@ import { FavoriteService } from '../services/favorite.service';
 import { AuthInterceptor } from '../interceptors/auth.interceptor';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+  import { addIcons } from 'ionicons';
+import { star, starOutline, heart, logOutOutline, heartOutline } from 'ionicons/icons';
+
+
+addIcons({
+  'star': star,
+  'star-outline': starOutline,
+  'heart': heartOutline,
+  'log-out-outline': logOutOutline
+});
 
 @Component({
   selector: 'app-home',
@@ -27,6 +37,10 @@ export class HomePage implements OnInit {
   filteredSuggestions: any[] = [];
   showSuggestions: boolean = false;
 
+
+
+
+
   constructor(
     private http: HttpClient,
     private favoriteService: FavoriteService,
@@ -34,47 +48,45 @@ export class HomePage implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
-    // Inscreve-se na lista de favoritos para atualizações em tempo real
-    this.favoriteService.favorites$.subscribe((favorites) => {
-      this.favorites = favorites;
-    });
-    this.loadAllPokemonNames();
-    this.loadPokemons();
-  }
+ngOnInit() {
+  
+  this.favoriteService.loadFavorites();
 
-  getToken(): string | null {
-    return localStorage.getItem('token');  // Recupera o token do localStorage
-  }
+  
+  this.favoriteService.favorites$.subscribe((favorites) => {
+    this.favorites = favorites;
+    console.log('Favoritos atualizados no componente:', this.favorites);
+  });
 
-    goToFavorites() {
-    this.router.navigate(['/favorites']);
-  }
+  this.loadAllPokemonNames();
+  this.loadPokemons();
+}
 
-  // Função de logout
+
+ 
   logout() {
-    localStorage.removeItem('token'); // Remover o token de autenticação
-    this.router.navigate(['/login']); // Redirecionar para a página de login
+    localStorage.removeItem('token'); 
+    this.router.navigate(['/login']); 
   }
 
-  toggleFavorite(pokemon: any) {
-    const token = this.getToken(); 
-    console.log(token);
-    if (!token) {
-      console.error('Token de autenticação não encontrado');
-      return;
-    }
-
-    if (this.isFavorite(pokemon)) {
-      this.favoriteService.removeFavorite(pokemon.id); 
-    } else {
-      this.favoriteService.addFavorite(pokemon.name); 
-    }
+toggleFavorite(pokemon: any) {
+ 
+  console.log(this.isFavorite(pokemon.id), pokemon.id, pokemon);
+  if (this.isFavorite(pokemon)) {
+    this.favoriteService.removeFavorite(pokemon.id); 
+  } else {
+    this.favoriteService.addFavorite(pokemon);
   }
+}
 
-  isFavorite(pokemon: any): boolean {
-    return this.favorites.some((fav) => fav.name === pokemon.name);  // Verifica pelo id, não pelo nome
-  }
+
+
+ isFavorite(pokemon: any): boolean {
+
+  return this.favorites.some((fav: any) => {
+    return fav.poke_id == pokemon.id;
+  });
+}
 
   loadAllPokemonNames() {
     const url = `https://pokeapi.co/api/v2/pokemon?limit=10000&offset=0`;
@@ -214,7 +226,11 @@ export class HomePage implements OnInit {
   }
 
   goToPokemon(pokemon: any) {
-    console.log(pokemon);
+  
     this.router.navigate(['/pokemon', pokemon]);
+  }
+
+  goToFavorites(){
+    this.router.navigate(['/favorites']);
   }
 }

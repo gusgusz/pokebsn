@@ -2,24 +2,26 @@
 
 <ion-header>
   <ion-toolbar color="primary">
-       <img
+    <img
       src="https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pok%C3%A9mon_logo.svg"
       alt="Pokémon Logo"
       style="width: 120px; margin-right: 16px;"
     />
+
     <ion-buttons slot="end">
-      <!-- Botão de Favoritos com estilo distinto -->
+      <!-- Botão Favoritos com ícone -->
       <ion-button (click)="goToFavorites()" color="secondary">
-        Favoritos
+        <ion-icon name="heart" slot="icon-only"></ion-icon>
       </ion-button>
-      
-      <!-- Botão de Logout com estilo distinto -->
+
+      <!-- Botão Logout com ícone -->
       <ion-button (click)="logout()" color="danger">
-        Logout
+        <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 
 
 
@@ -112,9 +114,17 @@
             <ion-button expand="block" fill="outline" color="primary" (click)="goToDetails(pokemon)">
               Ver Detalhes
             </ion-button>
-            <ion-button expand="block" fill="solid" color="warning" (click)="toggleFavorite(pokemon)">
-              {{ isFavorite(pokemon) ? '★ Favorito' : '☆ Favoritar' }}
-            </ion-button>
+       <ion-button
+            expand="block" 
+  (click)="toggleFavorite(pokemon)"
+>
+  <ion-icon
+    slot="start"
+    [name]="isFavorite(pokemon) ? 'star' : 'star-outline'"
+  ></ion-icon>
+  {{ isFavorite(pokemon) ? 'Favorito' : 'Favoritar' }}
+</ion-button>
+
           </ion-card-content>
         </ion-card>
       </ion-col>

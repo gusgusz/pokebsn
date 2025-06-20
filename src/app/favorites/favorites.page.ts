@@ -16,10 +16,10 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./favorites.page.scss'],
 })
 export class FavoritesPage implements OnInit {
-  favorites: any[] = []; // Lista de Pokémon favoritos
-  filteredFavorites: any[] = []; // Lista de Pokémon favoritos filtrados pela pesquisa
-  searchTerm: string = ''; // Termo de pesquisa
-  showSuggestions: boolean = false; // Controla a exibição das sugestões
+  favorites: any[] = []; 
+  filteredFavorites: any[] = []; 
+  searchTerm: string = ''; 
+  showSuggestions: boolean = false; 
 
   constructor(
     private favoriteService: FavoriteService,
@@ -28,24 +28,33 @@ export class FavoritesPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Verifica se existe um token no localStorage
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('token');
     
     if (token) {
-      // Carrega a lista de favoritos a partir da API
+  
       this.favoriteService.loadFavorites();
       
-      // Assina a lista de favoritos do serviço
+    
       this.favoriteService.favorites$.subscribe((favorites) => {
         this.favorites = favorites;
-        this.filteredFavorites = [...this.favorites]; // Inicializa os favoritos filtrados com todos os favoritos
+        this.filteredFavorites = [...this.favorites]; 
+        this.loadPokemonImages(); 
       });
     } else {
       console.error('Token de autenticação não encontrado');
     }
   }
 
-  // Filtra os favoritos com base no termo de pesquisa
+  loadPokemonImages() {
+    this.filteredFavorites.forEach(pokemon => {
+   
+      this.http.get(`https://pokeapi.co/api/v2/pokemon/${pokemon.name.toLowerCase()}`).subscribe((data: any) => {
+        pokemon.imageUrl = data.sprites.other['official-artwork'].front_default; // Atualiza a URL da imagem
+      });
+    });
+  }
+
+ 
   onSearchInput() {
     this.showSuggestions = true;
     if (this.searchTerm && this.searchTerm.trim() !== '') {
@@ -68,21 +77,9 @@ export class FavoritesPage implements OnInit {
     this.clearSuggestions(); // Limpa as sugestões após seleção
   }
 
-  // Função chamada quando pressionar "Enter" no campo de pesquisa
-  searchPokemon() {
-    console.log('Pesquisando Pokémon:', this.searchTerm);
-    if (this.searchTerm && this.searchTerm.trim() !== '') {
-      this.filteredFavorites = this.favorites.filter(pokemon =>
-        pokemon.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-    } else {
-      this.filteredFavorites = [...this.favorites];
-    }
-  }
-
   // Alterna o status de favorito de um Pokémon
   toggleFavorite(pokemon: any) {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('token');
     if (!token) {
       console.error("Token não encontrado");
       return;
@@ -90,15 +87,15 @@ export class FavoritesPage implements OnInit {
 
     const isFavorite = this.isFavorite(pokemon);
     if (isFavorite) {
-      this.removeFavoriteFromAPI(pokemon.id, token); // Remove do serviço de favoritos
+      this.removeFavoriteFromAPI(pokemon.id, token); 
     } else {
-      this.addFavoriteToAPI(pokemon, token); // Adiciona aos favoritos
+      this.addFavoriteToAPI(pokemon, token);
     }
   }
 
   // Verifica se o Pokémon é favorito
   isFavorite(pokemon: any): boolean {
-    return this.favorites.some(fav => fav.id === pokemon.id);
+    return this.favorites.some(fav => fav.poke_id === pokemon.id);
   }
 
   // Navega para a página de detalhes do Pokémon
