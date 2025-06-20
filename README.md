@@ -1,5 +1,7 @@
 Pokédex App - Projeto para BSN Tecnologia
 
+Em deploy em: https://pokebsn.onrender.com
+
 Este projeto foi desenvolvido como parte de um desafio para ingressar na BSN Tecnologia. Trata-se de uma aplicação completa estilo Pokédex, construída com Angular + Ionic, que consome a PokéAPI e possui autenticação, persistência de favoritos e funcionalidades de busca.
 🛠️ Stack Utilizada
 Front-end
@@ -24,7 +26,7 @@ Back-end
 
     JWT (JSON Web Token) para autenticação
 
-    SQLite com Sequelize ORM
+    postegresSQL
 
     REST API para login, registro e favoritos por usuário
 
