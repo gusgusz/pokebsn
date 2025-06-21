@@ -19,10 +19,11 @@ Front-end
     SCSS
 
 Back-end
+https://github.com/gusgusz/poke-api/tree/master
 
-    Node.js
+    Laravel
 
-    Express
+    PHP
 
     JWT (JSON Web Token) para autenticação
 
