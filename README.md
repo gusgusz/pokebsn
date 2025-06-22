@@ -118,7 +118,7 @@ it('should toggle favorite - remove when already favorited', () => {
 
     Ao realizar login, o token JWT é salvo no localStorage.
 
-    Interceptor de autenticação (auth.interceptor.ts) insere automaticamente o token nas requisições.
+    Interceptor de autenticação (auth.guard.ts) insere automaticamente o token nas requisições.
 
     O token é removido ao fazer logout.
 
@@ -136,28 +136,6 @@ Rodando o Front-end
 npm install
 ionic serve
 
-Rodando o Back-end
-
-composer install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate --seed
-php artisan serve
-
-
-🌟 Diferenciais
-
-    Utilização de Ionic Standalone Components
-
-    Icons customizados por tipo usando SVGs
-
-    Persistência dos favoritos por usuário no back-end
-
-    Sistema de sugestões inteligente durante a busca
-
-    Design responsivo para dispositivos móveis
-
-    Cobertura básica com testes unitários automatizados
 
 
 📧 Contato
