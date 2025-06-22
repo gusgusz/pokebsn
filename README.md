@@ -1,6 +1,6 @@
 Pokédex App - Projeto para BSN Tecnologia
 
-video do app: https://drive.google.com/file/d/1sfIszt44XQO3L4W-5jlJbeSSyGmuUBaE/view?usp=sharing
+video do app: https://drive.google.com/file/d/1DUBIyM3s9YYq9szOyb5IbCItk9cd3Jpc/view?usp=sharing
 
 ![Demonstração da aplicação](gif.gif)
 
