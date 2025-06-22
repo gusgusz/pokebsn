@@ -1,6 +1,6 @@
 Pokédex App - Projeto para BSN Tecnologia
 
-video do app: https://drive.google.com/file/d/1DUBIyM3s9YYq9szOyb5IbCItk9cd3Jpc/view?usp=sharing
+video do app: https://drive.google.com/file/d/1sfIszt44XQO3L4W-5jlJbeSSyGmuUBaE/view?usp=sharing
 
 Este projeto foi desenvolvido como parte de um desafio para ingressar na BSN Tecnologia. Trata-se de uma aplicação completa estilo Pokédex, construída com Angular + Ionic, que consome a PokéAPI e possui autenticação, persistência de favoritos e funcionalidades de busca.
 🛠️ Stack Utilizada
@@ -76,13 +76,6 @@ Tela de Favoritos
 
     Navegação para detalhes
 
-Componentes personalizados
-
-    Chips com ícones de tipo Pokémon
-
-    Layout responsivo com ion-grid
-
-    Feedback visual e UX aprimorada
 
 🧪 Testes Unitários
 
@@ -117,18 +110,6 @@ it('should toggle favorite - remove when already favorited', () => {
 
         RouterTestingModule
 
-📂 Estrutura de Diretórios
-
-src/
-├── app/
-│   ├── home/             # Página principal (lista, busca, favoritos)
-│   ├── favorites/        # Tela de favoritos do usuário
-│   ├── services/
-│   │   ├── favorite.service.ts
-│   │   └── auth.service.ts
-│   ├── interceptors/
-│   │   └── auth.interceptor.ts
-│   └── auth/             # Login / Registro (no back-end)
 
 🔒 Autenticação
 
@@ -154,9 +135,12 @@ ionic serve
 
 Rodando o Back-end
 
-cd backend
-npm install
-npm run dev
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
+
 
 🌟 Diferenciais
 
@@ -172,11 +156,7 @@ npm run dev
 
     Cobertura básica com testes unitários automatizados
 
-🎯 Objetivo
 
-Este projeto foi desenvolvido com muito cuidado e dedicação para demonstrar minhas habilidades como desenvolvedor Full Stack (Angular, Ionic, Node.js, Auth, Testes), com o objetivo de conquistar uma oportunidade profissional na BSN Tecnologia.
-
-Agradeço a oportunidade de mostrar meu trabalho!
 📧 Contato
 
     Nome: Gustavo Guimarães
